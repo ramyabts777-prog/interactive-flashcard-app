@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Flashcard App</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    text-align:center;
+}
+
+h1{
+    color:white;
+    margin-bottom:20px;
+}
+
+.flashcard{
+    width:350px;
+    height:220px;
+    perspective:1000px;
+    margin:auto;
+}
+
+.card{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform 0.8s;
+    cursor:pointer;
+}
+
+.card.flip{
+    transform:rotateY(180deg);
+}
+
+.front,
+.back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    backface-visibility:hidden;
+    border-radius:15px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.front{
+    background:white;
+    color:#333;
+}
+
+.back{
+    background:#333;
+    color:white;
+    transform:rotateY(180deg);
+}
+
+.buttons{
+    margin-top:25px;
+}
+
+button{
+    padding:12px 25px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+    background:#fff;
+    color:#333;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#333;
+    color:white;
+}
+
+.instructions{
+    color:white;
+    margin-top:15px;
+    font-size:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>📚 Interactive Flashcard App</h1>
+
+    <div class="flashcard">
+        <div class="card" id="card">
+            <div class="front" id="question">
+                Question
+            </div>
+
+            <div class="back" id="answer">
+                Answer
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="nextCard()">Next Card</button>
+        <button onclick="shuffleCards()">Shuffle Cards</button>
+    </div>
+
+    <p class="instructions">
+        Click the card to flip and reveal the answer.
+    </p>
+</div>
+
+<script>
+
+const flashcards = [
+{
+question:"What does HTML stand for?",
+answer:"HyperText Markup Language"
+},
+{
+question:"What does CSS stand for?",
+answer:"Cascading Style Sheets"
+},
+{
+question:"What does JS stand for?",
+answer:"JavaScript"
+},
+{
+question:"What is React?",
+answer:"A JavaScript Library for UI Development"
+},
+{
+question:"What is the purpose of CSS?",
+answer:"To style web pages"
+},
+{
+question:"Which tag creates a hyperlink?",
+answer:"<a> Tag"
+},
+{
+question:"Which method selects an element by ID?",
+answer:"document.getElementById()"
+},
+{
+question:"What is an Array?",
+answer:"A collection of multiple values"
+}
+];
+
+let currentIndex = 0;
+
+const question = document.getElementById("question");
+const answer = document.getElementById("answer");
+const card = document.getElementById("card");
+
+function loadCard(){
+    question.textContent = flashcards[currentIndex].question;
+    answer.textContent = flashcards[currentIndex].answer;
+    card.classList.remove("flip");
+}
+
+loadCard();
+
+card.addEventListener("click",()=>{
+    card.classList.toggle("flip");
+});
+
+function nextCard(){
+
+    currentIndex++;
+
+    if(currentIndex >= flashcards.length){
+        currentIndex = 0;
+    }
+
+    loadCard();
+}
+
+function shuffleCards(){
+
+    for(let i = flashcards.length - 1; i > 0; i--){
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [flashcards[i], flashcards[j]] =
+        [flashcards[j], flashcards[i]];
+    }
+
+    currentIndex = 0;
+
+    loadCard();
+
+    alert("Flashcards Shuffled!");
+}
+
+</script>
+
+</body>
+</html>
